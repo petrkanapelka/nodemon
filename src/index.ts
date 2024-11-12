@@ -42,6 +42,17 @@ app.get('/products/:id', (req: Request, res: Response) => {
     }
 });
 
+app.put('/products/:id', (req: Request, res: Response) => {
+    const id = req.params.id;
+    let product = products.find((product) => product.id === id);
+    if (product) {
+        product.title = req.body.title;
+        res.send(product);
+    } else {
+        res.send(404);
+    }
+});
+
 app.delete('/products/:id', (req: Request, res: Response) => {
     const id = req.params.id;
     const product = products.find((p) => p.id === id);
