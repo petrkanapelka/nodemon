@@ -1,5 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { productsRepository } from '../repositories/products-repository';
+import { handleValidationErrors } from '../middleware/validation';
+import { validateProductTitle } from '../validation/productValidation';
 
 export const productsRouter = Router({});
 
@@ -9,9 +11,9 @@ productsRouter.get('/', (req: Request, res: Response) => {
     res.send(foundProducts);
 });
 
-productsRouter.post('/', (req: Request, res: Response) => {
+productsRouter.post('/', validateProductTitle, handleValidationErrors, (req: Request, res: Response) => {
     const newProduct = productsRepository.createProduct(req.body.title);
-    res.status(201).json(newProduct);
+    res.status(201).send(newProduct);
 });
 
 productsRouter.get('/:id', (req: Request, res: Response) => {
@@ -19,7 +21,7 @@ productsRouter.get('/:id', (req: Request, res: Response) => {
     product ? res.json(product) : res.sendStatus(404);
 });
 
-productsRouter.put('/:id', (req: Request, res: Response) => {
+productsRouter.put('/:id', validateProductTitle, handleValidationErrors, (req: Request, res: Response) => {
     const isProductUpdated = productsRepository.updateProduct(req.params.id, req.body.title);
     if (isProductUpdated) {
         const product = productsRepository.findProducts(req.params.id);
