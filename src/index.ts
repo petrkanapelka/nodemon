@@ -1,25 +1,19 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { productsRouter } from './routes/product-router';
 import { addressesRouter } from './routes/addresses-router';
+import { countRequestMiddleware, requestCount } from './middleware/request-counter';
 
 // Create Express app
 export const app = express();
 const port = process.env.PORT || 5000;
 
-let count = 0;
-
-const counterMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    count++;
-    next();
-};
-
-app.use(counterMiddleware);
+app.use(countRequestMiddleware);
 app.use(express.json());
 app.use('/products', productsRouter);
 app.use('/addresses', addressesRouter);
 
 app.get('/counter', (req: Request, res: Response) => {
-    res.json({ count });
+    res.json({ requestCount });
 });
 
 // Start the server
