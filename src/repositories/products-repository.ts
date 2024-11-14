@@ -1,22 +1,28 @@
 import { v4 as uuidv4 } from 'uuid';
 
+export type ProductType = {
+    id: string;
+    title: string;
+};
+
 let products = [
     { id: '1', title: 'tomato' },
     { id: '2', title: 'orange' },
 ];
 
 export const productsRepository = {
-    findProducts(title: string | null) {
+    async findProducts(title: string | null): Promise<ProductType[]> {
         return title ? products.filter((p) => p.title.includes(title.toString())) : products;
     },
-    createProduct(title: string) {
+    async createProduct(title: string): Promise<ProductType> {
         const newProduct = { id: uuidv4(), title };
-        return products.push(newProduct);
+        products.push(newProduct);
+        return newProduct;
     },
-    getProductByID(id: string) {
+    async getProductByID(id: string) {
         return products.find((product) => product.id === id);
     },
-    updateProduct(id: string, title: string) {
+    async updateProduct(id: string, title: string) {
         const product = products.find((product) => product.id === id);
         if (product) {
             product.title = title;
@@ -24,7 +30,7 @@ export const productsRepository = {
         }
         return false;
     },
-    deleteProduct(id: string) {
+    async deleteProduct(id: string) {
         const initialLength = products.length;
         products = products.filter((p) => p.id !== id);
         return products.length < initialLength;
