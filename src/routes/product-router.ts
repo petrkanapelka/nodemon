@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import { productsRepository, ProductType } from '../repositories/products-repository';
+import { productsRepository, ProductType } from '../repositories/products-repository-db';
 import { handleValidationErrors } from '../middleware/validation';
 import { validateProductTitle } from '../validation/productValidation';
 
