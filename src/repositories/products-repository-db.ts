@@ -4,6 +4,7 @@ import { collection } from './db';
 export type ProductType = {
     id: string;
     title: string;
+    addedAt?: string;
 };
 
 export const productsRepository = {
@@ -14,7 +15,7 @@ export const productsRepository = {
             filter.title = { $regex: title };
         }
 
-        return collection.find(filter).toArray();
+        return collection.find(filter).sort({ addedAt: 1 }).limit(10).skip(7).toArray();
     },
 
     async createProduct(newProduct: ProductType): Promise<ProductType> {
