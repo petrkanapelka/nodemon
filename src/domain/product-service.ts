@@ -12,7 +12,8 @@ export const productsService = {
     },
 
     async createProduct(title: string): Promise<ProductType> {
-        const newProduct = { id: uuidv4(), title };
+        const addedDate = new Date();
+        const newProduct = { id: uuidv4(), title, addedAt: addedDate.toLocaleString() };
         const createadProduct = await productsRepository.createProduct(newProduct);
         return createadProduct;
     },
