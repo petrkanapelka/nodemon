@@ -2,6 +2,7 @@ import { Request, Response, Router } from 'express';
 import { productsRepository, ProductType } from '../repositories/products-repository-db';
 import { handleValidationErrors } from '../middleware/validation';
 import { validateProductTitle } from '../validation/productValidation';
+import { productsService } from '../domain/product-service';
 
 export const productsRouter = Router({});
 productsRouter.get('/', async (req: Request, res: Response) => {
@@ -11,7 +12,7 @@ productsRouter.get('/', async (req: Request, res: Response) => {
 });
 
 productsRouter.post('/', validateProductTitle, handleValidationErrors, async (req: Request, res: Response) => {
-    const newProduct = await productsRepository.createProduct(req.body.title);
+    const newProduct = await productsService.createProduct(req.body.title);
     res.status(201).send(newProduct);
 });
 
