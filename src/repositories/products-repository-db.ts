@@ -17,8 +17,7 @@ export const productsRepository = {
         return collection.find(filter).toArray();
     },
 
-    async createProduct(title: string): Promise<ProductType> {
-        const newProduct = { id: uuidv4(), title };
+    async createProduct(newProduct: ProductType): Promise<ProductType> {
         const result = await collection.insertOne(newProduct);
         return newProduct;
     },
